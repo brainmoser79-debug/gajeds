@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GALAXY TECH — Космический магазин</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background: radial-gradient(circle at 50% 0%, #1a103c 0%, #0b0718 60%, #030108 100%);
+            background-attachment: fixed;
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glass-card {
+            background: rgba(20, 15, 38, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+        }
+        .glass-card:hover {
+            border-color: rgba(168, 85, 247, 0.6);
+            box-shadow: 0 0 30px rgba(168, 85, 247, 0.35);
+            transform: translateY(-4px);
+        }
+        .neon-text {
+            text-shadow: 0 0 20px rgba(168, 85, 247, 0.7);
+        }
+        .neon-btn {
+            background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+            box-shadow: 0 0 20px rgba(168, 85, 247, 0.5);
+        }
+        .neon-btn:hover {
+            box-shadow: 0 0 30px rgba(168, 85, 247, 0.9);
+        }
+        @keyframes spin-slow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .animate-spin-custom {
+            animation: spin-slow 1s linear infinite;
+        }
+    </style>
+</head>
+<body class="text-gray-100 font-sans min-h-screen flex flex-col justify-between">
+
+    <div>
+        <header class="glass sticky top-0 z-50 border-b border-purple-900/35">
+            <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+                <span class="text-2xl md:text-3xl font-black tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-500 neon-text">GALAXY TECH</span>
+                
+                <div class="flex items-center gap-3">
+                    <a href="favorites.html" class="glass px-4 py-2 rounded-full border border-pink-500/30 flex items-center gap-2 text-xs font-bold text-pink-400 hover:bg-pink-500/10 transition">
+                        <span>❤️ Избранное:</span>
+                        <span id="favCount" class="text-white">0</span>
+                    </a>
+                    <a href="card.html" class="neon-btn text-white text-xs font-bold uppercase tracking-wider px-5 py-2.5 rounded-full transition flex items-center gap-2">
+                        🛒 Корзина <span id="cartCount">0</span>
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <main class="max-w-7xl mx-auto px-6 my-8">
+            
+            <div class="glass p-6 rounded-3xl mb-10 border border-purple-500/30">
+                <h2 class="text-lg font-bold text-purple-200 mb-4 uppercase tracking-wider text-center">✨ Добавить новый товар в каталог</h2>
+                <div class="flex flex-wrap justify-center gap-3">
+                    <input type="text" id="pName" placeholder="Название модели" class="p-2.5 bg-black/40 border border-purple-500/30 rounded-xl text-xs text-purple-200 placeholder-purple-400/40 outline-none focus:border-cyan-400 w-48">
+                    <input type="number" id="pPrice" placeholder="Цена ($)" class="p-2.5 bg-black/40 border border-purple-500/30 rounded-xl text-xs text-purple-200 placeholder-purple-400/40 outline-none focus:border-cyan-400 w-32">
+                    <input type="text" id="pImg" placeholder="Ссылка на фото (URL)" class="p-2.5 bg-black/40 border border-purple-500/30 rounded-xl text-xs text-purple-200 placeholder-purple-400/40 outline-none focus:border-cyan-400 w-52">
+                    <select id="pCategory" class="p-2.5 bg-[#140f26] border border-purple-500/30 rounded-xl text-xs text-purple-200 outline-none focus:border-cyan-400">
+                        <option value="Смартфоны">Смартфоны</option>
+                        <option value="Планшеты">Планшеты</option>
+                        <option value="Ноутбуки">Ноутбуки</option>
+                    </select>
+                    <button onclick="addProduct()" class="px-6 py-2.5 bg-emerald-600/80 hover:bg-emerald-500 border border-emerald-400/40 text-white text-xs font-bold uppercase tracking-wider rounded-xl transition shadow-lg">Добавить в систему</button>
+                </div>
+            </div>
+
+            <div class="glass p-6 rounded-3xl mb-10 flex flex-col items-center gap-4 border border-purple-500/20">
+                <div class="flex flex-wrap justify-center gap-3">
+                    <button class="btn1 px-6 py-2.5 bg-purple-900/40 hover:bg-purple-600/50 border border-purple-500/30 text-purple-200 text-xs font-bold uppercase tracking-wider rounded-xl transition">Смартфоны</button>
+                    <button class="btn2 px-6 py-2.5 bg-purple-900/40 hover:bg-purple-600/50 border border-purple-500/30 text-purple-200 text-xs font-bold uppercase tracking-wider rounded-xl transition">Планшеты</button>
+                    <button class="btn3 px-6 py-2.5 bg-purple-900/40 hover:bg-purple-600/50 border border-purple-500/30 text-purple-200 text-xs font-bold uppercase tracking-wider rounded-xl transition">Ноутбуки</button>
+                    <button class="sortOrg px-6 py-2.5 bg-purple-900/40 hover:bg-purple-600/50 border border-purple-500/30 text-purple-200 text-xs font-bold uppercase tracking-wider rounded-xl transition">Все товары</button>
+                </div>
+                <div class="flex flex-wrap justify-center gap-3">
+                    <button class="sortUp px-5 py-2 bg-indigo-950/60 hover:bg-indigo-900/80 text-cyan-300 text-xs font-semibold rounded-lg transition border border-indigo-500/30">Сначала дешевле ↑</button>
+                    <button class="sortDown px-5 py-2 bg-indigo-950/60 hover:bg-indigo-900/80 text-cyan-300 text-xs font-semibold rounded-lg transition border border-indigo-500/30">Сначала дороже ↓</button>
+                </div>
+            </div>
+
+            <!-- Список карточек -->
+            <div class="box flex items-center justify-center flex-wrap gap-6"></div>
+        </main>
+    </div>
+
+    <!-- Модальное окно загрузки и зеленой галочки -->
+    <div id="loadingModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center hidden">
+        <div class="glass p-8 rounded-3xl border border-purple-500/40 flex flex-col items-center shadow-2xl">
+            <div id="spinnerBox" class="flex flex-col items-center">
+                <div class="w-12 h-12 border-4 border-purple-500 border-t-cyan-400 rounded-full animate-spin-custom mb-4"></div>
+                <p class="text-xs font-bold text-purple-200 uppercase tracking-widest">Добавление в корзину...</p>
+            </div>
+            <div id="successBox" class="flex flex-col items-center hidden">
+                <div class="w-12 h-12 bg-emerald-500/20 border-2 border-emerald-400 rounded-full flex items-center justify-center text-emerald-400 text-2xl mb-4 shadow-[0_0_20px_rgba(52,211,153,0.5)]">
+                    ✓
+                </div>
+                <p class="text-xs font-bold text-emerald-300 uppercase tracking-widest">Успешно добавлено!</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Футер -->
+    <footer class="glass border-t border-purple-900/40 mt-20 py-10">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
+            <div>
+                <span class="text-xl font-black tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-500 neon-text">GALAXY TECH</span>
+                <p class="text-xs text-purple-300/60 mt-1">Инновационные гаджеты с доставкой из космоса.</p>
+            </div>
+            <div class="flex items-center gap-6 text-xs text-purple-200/80">
+                <a href="index.html" class="hover:text-cyan-400 transition">Каталог</a>
+                <a href="favorites.html" class="hover:text-pink-400 transition">Избранное</a>
+                <a href="card.html" class="hover:text-purple-400 transition">Корзина</a>
+            </div>
+            <p class="text-[11px] text-purple-400/50">© 2026 GALAXY TECH. Все права защищены.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
